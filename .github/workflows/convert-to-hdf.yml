@@ -1,0 +1,24 @@
+name: Convert File to HDF
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+         fetch-depth: 0
+      - name: Convert file to HDF
+        uses: mitre/heimdall_tools_action@v1.1
+        with:
+          file: 'sarif_input.sarif'
+          converter: 'sarif_mapper'
+      - name: Artifact
+        uses: actions/upload-artifact@v1
+        if: success()
+        with:
+          name: sarif_input
+          path: heimdall_tools_sarif.json
